@@ -1,24 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import LoginSuccess from './Components/LogInSuccess';
+import LoginFail from './Components/LoginFail';
+import {useSelector,useDispatch} from 'react-redux';
+import {signin} from './Actions';
 
 function App() {
+
+  const username = React.createRef();
+  const password = React.createRef();
+
+  const issignin = useSelector( state => state.signin);
+  const dispatch = useDispatch();
+
+  let compo ;
+
+  if(issignin == 1) {
+    compo = ( <LoginSuccess/>)
+  }else if(issignin == 2) {
+    compo = ( <LoginFail/>)
+  }else{
+    compo = null;
+  }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h3>Log In</h3>
+      <label>User Name</label>
+      <br></br>
+      <input type="input" ref={username}></input>
+      <br></br>
+      <label>Password</label>
+      <br></br>
+      <input type="password" ref={password}></input>
+      <br></br>
+      <button onClick={()=> dispatch(signin(username.current.value,password.current.value)) }>Log in</button>
+      {compo}
     </div>
   );
 }
